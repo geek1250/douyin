@@ -286,6 +286,8 @@ func generateDrawText(subtitles *astisub.Subtitles, fileName string, videoID int
 		return response, err
 	}
 	textString := ""
+	videoPositionY = (1536 - height) / 2
+	startY = videoPositionY - 100*2
 	if videoID == 0 {
 		text1 := subtitles.Items[videoID].Lines[0].Items[0].Text
 		text2 := subtitles.Items[videoID].Lines[1].Items[0].Text
@@ -357,12 +359,17 @@ func addText2Video(textString string, inputFileName string, outputFileName strin
 	if err != nil {
 		return "", err
 	}
+
 	introductionVideoTransformFileName := generateNewName(introductionVideo, "-formated.mp4")
-	if inputFileName == introductionVideoTransformFileName {
-		removeFile(inputFileName)
+	if inputFileName != introductionVideoTransformFileName {
+		copyFileName := generateNewName(inputFileName, "-copy.mp4")
+		CopyFile(inputFileName, copyFileName)
+
+		copyFileName = generateNewName(outputFileName, "-copy.mp4")
+		CopyFile(outputFileName, copyFileName)
 	}
-	copyFileName := generateNewName(inputFileName, "-copy.mp4")
-	CopyFile(inputFileName, copyFileName)
+	removeFile(inputFileName)
+
 	return "", nil
 }
 func replaceSpecialChars(script string) (reponse string) {
