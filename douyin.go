@@ -193,7 +193,7 @@ func generateIntroductionVideo(subtitles *astisub.Subtitles, videoFiles []string
 
 	//pepare raw meterials
 	//language : 0 For English, 1 For Chinese
-	var language1 int = 0
+	var language1 int = 1
 	var language2 int = 1
 
 	// generate line 1 voice
@@ -360,14 +360,14 @@ func addText2Video(textString string, inputFileName string, outputFileName strin
 		return "", err
 	}
 
-	introductionVideoTransformFileName := generateNewName(introductionVideo, "-formated.mp4")
-	if inputFileName != introductionVideoTransformFileName {
-		copyFileName := generateNewName(inputFileName, "-copy.mp4")
-		CopyFile(inputFileName, copyFileName)
+	// introductionVideoTransformFileName := generateNewName(introductionVideo, "-formated.mp4")
+	// if inputFileName != introductionVideoTransformFileName {
+	// 	copyFileName := generateNewName(inputFileName, "-copy.mp4")
+	// 	CopyFile(inputFileName, copyFileName)
 
-		copyFileName = generateNewName(outputFileName, "-copy.mp4")
-		CopyFile(outputFileName, copyFileName)
-	}
+	// 	copyFileName = generateNewName(outputFileName, "-copy.mp4")
+	// 	CopyFile(outputFileName, copyFileName)
+	// }
 	removeFile(inputFileName)
 
 	return "", nil

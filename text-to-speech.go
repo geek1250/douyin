@@ -10,10 +10,6 @@ import (
 	"github.com/watson-developer-cloud/go-sdk/texttospeechv1"
 )
 
-// type TextToSpeechV1 struct {
-// 	Service *core.BaseService
-// }
-
 var service *texttospeechv1.TextToSpeechV1
 
 func textToSpeech(fileName string, text string, languageCode int) {
