@@ -22,8 +22,6 @@ var (
 	startY         = 200
 	videoPositionY = startY + 100*2
 
-	IBMText2SpeechAPIKey = "THIS IS IBM Text to Speech API Key"
-
 	outputPath = "../../douyin-works/"
 
 	resourceFolder = "resource/"
@@ -194,15 +192,17 @@ func generateIntroductionVideo(subtitles *astisub.Subtitles, videoFiles []string
 	removeFile(defaultImage)
 
 	//pepare raw meterials
+	//language : 0 For English, 1 For Chinese
+	var language1 int = 0
+	var language2 int = 1
 
 	// generate line 1 voice
 	textString := subtitles.Items[0].Lines[0].Items[0].Text
-	//textToSpeech(IBMText2SpeechAPIKey, audioFile1, textString, 0) //For English
-	textToSpeech(IBMText2SpeechAPIKey, audioFile1, textString, 1) // For Chinese
+	textToSpeech(audioFile1, textString, language1)
 
 	// generate line 2 voice
 	textString = subtitles.Items[0].Lines[1].Items[0].Text
-	textToSpeech(IBMText2SpeechAPIKey, audioFile2, textString, 1)
+	textToSpeech(audioFile2, textString, language2)
 
 	response, err := combineAudios()
 	if err != nil {

@@ -10,20 +10,38 @@ import (
 	"github.com/watson-developer-cloud/go-sdk/texttospeechv1"
 )
 
-func textToSpeech(key, fileName string, text string, languageCode int) {
-	// Instantiate the Watson Text To Speech service
-	authenticator := &core.IamAuthenticator{
-		ApiKey: key,
-	}
+// type TextToSpeechV1 struct {
+// 	Service *core.BaseService
+// }
 
-	service, serviceErr := texttospeechv1.
-		NewTextToSpeechV1(&texttospeechv1.TextToSpeechV1Options{
-			Authenticator: authenticator,
-		})
+var service *texttospeechv1.TextToSpeechV1
 
-	// Check successful instantiation
-	if serviceErr != nil {
-		panic(serviceErr)
+func textToSpeech(fileName string, text string, languageCode int) {
+	if service == nil {
+		keyName := "IBMText2SpeechAPIKey"
+		key, ok := os.LookupEnv(keyName)
+		if !ok {
+			fmt.Printf("%s not set\n", keyName)
+			fmt.Println("Please set IBM Text to Speech API Key in environment variables")
+			return
+		} else {
+			fmt.Printf("%s=%s\n", keyName, key)
+		}
+		// Instantiate the Watson Text To Speech service
+		authenticator := &core.IamAuthenticator{
+			ApiKey: key,
+		}
+		var serviceErr error = nil
+		service, serviceErr = texttospeechv1.
+			NewTextToSpeechV1(&texttospeechv1.TextToSpeechV1Options{
+				Authenticator: authenticator,
+			})
+
+		// Check successful instantiation
+		if serviceErr != nil {
+			panic(serviceErr)
+		}
+		fmt.Println("UserAgent: " + service.Service.UserAgent)
 	}
 
 	/* SYNTHESIZE */
