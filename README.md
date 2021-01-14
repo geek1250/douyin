@@ -19,4 +19,4 @@ will generate an executable file named main
 
 
 Please note: 
-ffprobe is required and installed in /usr/local/bin/
+ffmpeg and ffprobe are required and installed in /usr/local/bin/
