@@ -336,7 +336,8 @@ func changeVideoHeigh(fileName string, transformFileName string) (response strin
 	fmt.Println(transformFileName)
 	removeFile(transformFileName)
 	//increase video height
-	command := "ffmpeg -i " + fileName + " -max_muxing_queue_size 9999 " + " -vf pad=width=iw:height=1536:x=0:y=" + strconv.Itoa(videoPositionY) + ":color=violet,setdar=9/16 " + transformFileName
+	//command := "ffmpeg -i " + fileName + " -max_muxing_queue_size 9999 " + " -vf pad=width=iw:height=1536:x=0:y=" + strconv.Itoa(videoPositionY) + ":color=violet,setdar=9/16 " + transformFileName
+	command := "ffmpeg -i " + fileName + " -max_muxing_queue_size 9999 " + " -lavfi " + "[0:v]scale=iw:1536,boxblur=luma_radius=min(h\\,w)/40:luma_power=3:chroma_radius=min(cw\\,ch)/40:chroma_power=1[bg];[bg][0:v]overlay=(W-w)/2:(H-h)/2,setdar=9/16 " + transformFileName
 	response, err := runCommand(command)
 	if err != nil {
 		return response, err
