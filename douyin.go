@@ -288,30 +288,28 @@ func generateDrawText(subtitles *astisub.Subtitles, fileName string, videoID int
 	textString := ""
 	videoPositionY = (1536 - height) / 2
 	startY = videoPositionY - 100*2
+	boxX := 100
+	boxheight := 100
 	if videoID == 0 {
 		text1 := subtitles.Items[videoID].Lines[0].Items[0].Text
 		text2 := subtitles.Items[videoID].Lines[1].Items[0].Text
-
-		boxX := 100
-		boxheight := 100
-		textString := ""
-		textString = textString + "drawbox=y=" + strconv.Itoa(startY) + ":color=yellow@0.8:width=iw:height=100:t=fill,drawtext=fontcolor=black:fontsize=60:fontfile=/Library/Fonts/SimHei.ttf" + ":x=20:y=" + strconv.Itoa(startY+20) + ":text=" + "\"" + text1 + "\""
+		textString = textString + "drawbox=y=" + strconv.Itoa(startY) + ":color=yellow@0.8:width=iw:height=100:t=fill,drawtext=fontcolor=black:fontsize=60:fontfile=/Library/Fonts/SimHei.ttf" + ":x=\\(w-text_w\\)/2:y=" + strconv.Itoa(startY+boxheight/2) + "-text_h/2" + ":text=" + "\"" + text1 + "\""
 		text2 = replaceSpecialChars(text2)
-		textString = textString + "," + "drawbox=x=" + strconv.Itoa(boxX) + ":y=" + strconv.Itoa(startY+boxheight) + ":color=green@0.8:width=" + strconv.Itoa(864-2*boxX) + ":height=100:t=fill,drawtext=fontcolor=black:fontsize=50:fontfile=/Library/Fonts/SimHei.ttf" + ":x=" + strconv.Itoa(boxX+20) + ":y=" + strconv.Itoa(startY+30+boxheight) + ":text=" + "\"" + text2 + "\""
+		textString = textString + "," + "drawbox=x=" + strconv.Itoa(boxX) + ":y=" + strconv.Itoa(startY+boxheight) + ":color=green@0.8:width=" + strconv.Itoa(864-2*boxX) + ":height=100:t=fill,drawtext=fontcolor=black:fontsize=50:fontfile=/Library/Fonts/SimHei.ttf" + ":x=\\(w-text_w\\)/2" + ":y=" + strconv.Itoa(startY+boxheight*3/2) + "-text_h/2" + ":text=" + "\"" + text2 + "\""
 		return textString, nil
 	}
 
 	if (len(subtitles.Items[0].Lines)) > 2 {
 		script := subtitles.Items[0].Lines[2].Items[0].Text
 		script = replaceSpecialChars(script)
-		textString = textString + "drawbox=y=" + strconv.Itoa(startY) + ":color=yellow@0.8:width=iw:height=100:t=fill,drawtext=fontcolor=black:fontsize=40:fontfile=/Library/Fonts/SimHei.ttf" + ":x=20:y=" + strconv.Itoa(startY+40) + ":text=" + "\"" + script + "\""
+		textString = textString + "drawbox=y=" + strconv.Itoa(startY) + ":color=yellow@0.8:width=iw:height=100:t=fill,drawtext=fontcolor=black:fontsize=60:fontfile=/Library/Fonts/SimHei.ttf" + ":x=\\(w-text_w\\)/2:y=" + strconv.Itoa(startY+boxheight/2) + "-text_h/2" + ":text=" + "\"" + script + "\""
 
 	}
 	if (len(subtitles.Items[0].Lines)) > 3 {
 		script := subtitles.Items[0].Lines[3].Items[0].Text
 		script = replaceSpecialChars(script)
 		textString = textString + ","
-		textString = textString + "drawbox=y=" + strconv.Itoa(startY+100) + ":color=green@0.8:width=iw:height=100:t=fill,drawtext=fontcolor=black:fontsize=40:fontfile=/Library/Fonts/SimHei.ttf" + ":x=20:y=" + strconv.Itoa(startY+100+40) + ":text=" + "\"" + script + "\""
+		textString = textString + "drawbox=y=" + strconv.Itoa(startY+100) + ":color=green@0.8:width=iw:height=100:t=fill,drawtext=fontcolor=black:fontsize=50:fontfile=/Library/Fonts/SimHei.ttf" + ":x=\\(w-text_w\\)/2:y=" + strconv.Itoa(startY+boxheight*3/2) + "-text_h/2" + ":text=" + "\"" + script + "\""
 	}
 	length := len(subtitles.Items[videoID].Lines)
 	if length > 0 {
@@ -323,7 +321,7 @@ func generateDrawText(subtitles *astisub.Subtitles, fileName string, videoID int
 		script = replaceSpecialChars(script)
 		fmt.Println(script)
 		y := videoPositionY + height + i*60
-		textString = textString + "drawbox=y=" + strconv.Itoa(y) + ":color=yellow@0.8:width=iw:height=60:t=fill,drawtext=fontcolor=black:fontsize=40:fontfile=/Library/Fonts/SimHei.ttf" + ":x=20:y=" + strconv.Itoa(y+20) + ":text=" + "\"" + script + "\""
+		textString = textString + "drawbox=y=" + strconv.Itoa(y) + ":color=yellow@0.8:width=iw:height=60:t=fill,drawtext=fontcolor=black:fontsize=40:fontfile=/Library/Fonts/SimHei.ttf" + ":x=30:y=" + strconv.Itoa(y+20) + ":text=" + "\"" + script + "\""
 		if i < length-1 {
 			textString = textString + ","
 		}
