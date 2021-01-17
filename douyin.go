@@ -298,6 +298,9 @@ func generateDrawText(subtitles *astisub.Subtitles, fileName string, videoID int
 		textString = textString + "," + "drawbox=x=" + strconv.Itoa(boxX) + ":y=" + strconv.Itoa(startY+boxheight) + ":color=green@0.8:width=" + strconv.Itoa(864-2*boxX) + ":height=100:t=fill,drawtext=fontcolor=black:fontsize=50:fontfile=/Library/Fonts/SimHei.ttf" + ":x=\\(w-text_w\\)/2" + ":y=" + strconv.Itoa(startY+boxheight*3/2) + "-text_h/2" + ":text=" + "\"" + text2 + "\""
 		return textString, nil
 	}
+	if len(subtitles.Items[0].Lines) > 4 {
+		startY = startY - (len(subtitles.Items[0].Lines)-4)*40
+	}
 
 	if (len(subtitles.Items[0].Lines)) > 2 {
 		script := subtitles.Items[0].Lines[2].Items[0].Text
@@ -311,6 +314,14 @@ func generateDrawText(subtitles *astisub.Subtitles, fileName string, videoID int
 		textString = textString + ","
 		textString = textString + "drawbox=y=" + strconv.Itoa(startY+100) + ":color=green@0.8:width=iw:height=100:t=fill,drawtext=fontcolor=black:fontsize=50:fontfile=/Library/Fonts/SimHei.ttf" + ":x=\\(w-text_w\\)/2:y=" + strconv.Itoa(startY+boxheight*3/2) + "-text_h/2" + ":text=" + "\"" + script + "\""
 	}
+	if (len(subtitles.Items[0].Lines)) > 4 {
+		for i := 0; i < len(subtitles.Items[0].Lines)-4; i++ {
+			script := subtitles.Items[0].Lines[i+4].Items[0].Text
+			script = replaceSpecialChars(script)
+			textString = textString + ","
+			textString = textString + "drawbox=y=" + strconv.Itoa(startY+100*2+40*i) + ":color=yellow@0.8:width=iw:height=40:t=fill,drawtext=fontcolor=black:fontsize=20:fontfile=/Library/Fonts/SimHei.ttf" + ":x=20:y=" + strconv.Itoa(startY+100*2+40*i+15) + "-text_h/2" + ":text=" + "\"" + script + "\""
+		}
+	}
 	length := len(subtitles.Items[videoID].Lines)
 	if length > 0 {
 		textString = textString + ","
@@ -321,7 +332,7 @@ func generateDrawText(subtitles *astisub.Subtitles, fileName string, videoID int
 		script = replaceSpecialChars(script)
 		fmt.Println(script)
 		y := videoPositionY + height + i*60
-		textString = textString + "drawbox=y=" + strconv.Itoa(y) + ":color=yellow@0.8:width=iw:height=60:t=fill,drawtext=fontcolor=black:fontsize=40:fontfile=/Library/Fonts/SimHei.ttf" + ":x=30:y=" + strconv.Itoa(y+20) + ":text=" + "\"" + script + "\""
+		textString = textString + "drawbox=y=" + strconv.Itoa(y) + ":color=yellow@0.8:width=iw:height=60:t=fill,drawtext=fontcolor=black:fontsize=40:fontfile=/Library/Fonts/SimHei.ttf" + ":x=20:y=" + strconv.Itoa(y+20) + ":text=" + "\"" + script + "\""
 		if i < length-1 {
 			textString = textString + ","
 		}
