@@ -31,10 +31,12 @@ var (
 	voicelistFile  = resourceFolder + "voicelist.txt"
 	audioFile1     = tempFolder + "1.mp3"
 	audioFile2     = tempFolder + "2.mp3"
+	audioFile3     = tempFolder + "3.mp3"
 
 	defaultImage      = tempFolder + "defaultImage.jpg"
 	headerAudioFile1  = tempFolder + "1-formated.mp3"
 	headerAudioFile2  = tempFolder + "2-formated.mp3"
+	headerAudioFile3  = tempFolder + "3-formated.mp3"
 	introductionAudio = tempFolder + "introduction.mp3"
 	introductionVideo = tempFolder + "introductionVideo.mp4"
 )
@@ -171,8 +173,14 @@ func setAudioRate() (response string, errname error) {
 	if err != nil {
 		return response, err
 	}
+	command = "ffmpeg -i " + audioFile3 + " -ar 44100 " + headerAudioFile3
+	response, err = runCommand(command)
+	if err != nil {
+		return response, err
+	}
 	removeFile(audioFile1)
 	removeFile(audioFile2)
+	removeFile(audioFile3)
 	return "", nil
 }
 
@@ -204,6 +212,10 @@ func generateIntroductionVideo(subtitles *astisub.Subtitles, videoFiles []string
 	textString = subtitles.Items[0].Lines[1].Items[0].Text
 	textToSpeech(audioFile2, textString, language2)
 
+	// generate line 4 voice for English phrases or words
+	textString = subtitles.Items[0].Lines[3].Items[0].Text
+	textToSpeech(audioFile3, textString, 0)
+
 	response, err := combineAudios()
 	if err != nil {
 		fmt.Println(response)
@@ -223,6 +235,7 @@ func generateIntroductionVideo(subtitles *astisub.Subtitles, videoFiles []string
 	}
 	removeFile(headerAudioFile1)
 	removeFile(headerAudioFile2)
+	removeFile(headerAudioFile3)
 	removeFile(introductionAudio)
 	removeFile(defaultImage)
 	return "", nil
@@ -312,7 +325,7 @@ func generateDrawText(subtitles *astisub.Subtitles, fileName string, videoID int
 		script := subtitles.Items[0].Lines[3].Items[0].Text
 		script = replaceSpecialChars(script)
 		textString = textString + ","
-		textString = textString + "drawbox=y=" + strconv.Itoa(startY+100) + ":color=green@0.8:width=iw:height=100:t=fill,drawtext=fontcolor=black:fontsize=50:fontfile=/Library/Fonts/SimHei.ttf" + ":x=\\(w-text_w\\)/2:y=" + strconv.Itoa(startY+boxheight*3/2) + "-text_h/2" + ":text=" + "\"" + script + "\""
+		textString = textString + "drawbox=y=" + strconv.Itoa(startY+100) + ":color=green@0.8:width=iw:height=100:t=fill,drawtext=fontcolor=black:fontsize=40:fontfile=/Library/Fonts/SimHei.ttf" + ":x=\\(w-text_w\\)/2:y=" + strconv.Itoa(startY+boxheight*3/2) + "-text_h/2" + ":text=" + "\"" + script + "\""
 	}
 	if (len(subtitles.Items[0].Lines)) > 4 {
 		for i := 0; i < len(subtitles.Items[0].Lines)-4; i++ {

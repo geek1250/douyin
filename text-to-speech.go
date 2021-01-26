@@ -52,7 +52,7 @@ func textToSpeech(fileName string, text string, languageCode int) {
 	} else {
 		synthesizeOptions = service.NewSynthesizeOptions(text).
 			SetAccept("audio/mp3").
-			SetVoice("zh-CN_LiNaVoice")
+			SetVoice("zh-CN_WangWeiVoice")
 	}
 	// Call the textToSpeech Synthesize method
 	synthesizeResult, _, responseErr := service.Synthesize(synthesizeOptions)
